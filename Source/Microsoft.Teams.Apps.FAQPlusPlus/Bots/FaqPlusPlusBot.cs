@@ -198,6 +198,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 this.logger.LogInformation($"from: {message.From?.Id}, conversation: {message.Conversation.Id}, replyToId: {message.ReplyToId}");
                 await this.SendTypingIndicatorAsync(turnContext).ConfigureAwait(false);
 
+                if (message.Conversation.ConversationType == null)
+                {
+                    message.Conversation.ConversationType = ConversationTypePersonal;
+                }
+
                 switch (message.Conversation.ConversationType.ToLower())
                 {
                     case ConversationTypePersonal:
@@ -251,6 +256,9 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     this.logger.LogInformation("Ignoring conversationUpdate that was not a membersAdded event");
                     return;
                 }
+
+                if (activity.Conversation.ConversationType == null)
+                    activity.Conversation.ConversationType = ConversationTypePersonal;
 
                 switch (activity.Conversation.ConversationType.ToLower())
                 {
@@ -761,7 +769,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             ITurnContext<IMessageActivity> turnContext,
             CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrEmpty(message.ReplyToId) && (message.Value != null) && ((JObject)message.Value).HasValues)
+            if ((message.Value != null) && ((JObject)message.Value).HasValues)
             {
                 this.logger.LogInformation("Card submit in 1:1 chat");
                 await this.OnAdaptiveCardSubmitInPersonalChatAsync(message, turnContext, cancellationToken).ConfigureAwait(false);
@@ -769,6 +777,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             }
 
             string text = message.Text?.ToLower()?.Trim() ?? string.Empty;
+            
+            if (string.IsNullOrEmpty(text) && message.Value != null)
+            {
+                var messageBackObject = JsonConvert.DeserializeObject<MessageBack>(message.Value.ToString());
+                text = messageBackObject.msteams.text;
+            }
 
             switch (text)
             {
@@ -889,7 +903,9 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             Attachment userCard = null;         // Acknowledgement to the user
             TicketEntity newTicket = null;      // New ticket
 
-            switch (message?.Text)
+            var messageBackObject = JsonConvert.DeserializeObject<MessageBack>(message.Value.ToString());
+
+            switch (messageBackObject.msteams.text)
             {
                 case Constants.AskAnExpert:
                     this.logger.LogInformation("Sending user ask an expert card (from answer)");

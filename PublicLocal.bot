@@ -1,0 +1,18 @@
+{
+    "name": "PublicLocal",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "b72c0d92-92ad-4a9e-bcde-9ebfbd5850e9",
+            "appPassword": "aUV6f4S.aoatE0c2_m6m-uF4N1ecxtOg.3",
+            "endpoint": "https://localhost:44376/api/messages",
+            "id": "b1fb46b0-d7ec-11ea-b5e6-c1c076dac267",
+            "name": "https://localhost:44376/api/messages"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "path": "C:\\Projects\\PublicEngagement\\PublicLocal.bot",
+    "overrides": null
+}
