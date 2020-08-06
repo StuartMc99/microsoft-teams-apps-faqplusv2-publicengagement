@@ -158,7 +158,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             {
                 if (turnContext != null & !this.IsActivityFromExpectedTenant(turnContext))
                 {
-                    this.logger.LogInformation($"Unexpected tenant id {turnContext?.Activity.Conversation.TenantId}", SeverityLevel.Warning);
+                    this.logger.LogInformation($"STU Unexpected tenant id {turnContext?.Activity.Conversation.TenantId}", SeverityLevel.Warning);
                     return Task.CompletedTask;
                 }
 
