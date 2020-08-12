@@ -769,7 +769,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             ITurnContext<IMessageActivity> turnContext,
             CancellationToken cancellationToken)
         {
-            if ((message.Value != null) && ((JObject)message.Value).HasValues)
+            if (message.Value != null)
             {
                 this.logger.LogInformation("Card submit in 1:1 chat");
                 await this.OnAdaptiveCardSubmitInPersonalChatAsync(message, turnContext, cancellationToken).ConfigureAwait(false);
@@ -909,7 +909,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             {
                 case Constants.AskAnExpert:
                     this.logger.LogInformation("Sending user ask an expert card (from answer)");
-                    var askAnExpertPayload = ((JObject)message.Value).ToObject<ResponseCardPayload>();
+                    var askAnExpertPayload = JObject.Parse(message.Value.ToString()).ToObject<ResponseCardPayload>();
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard(askAnExpertPayload))).ConfigureAwait(false);
                     break;
 
