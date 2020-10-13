@@ -340,6 +340,15 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email (required).
+        /// </summary>
+        public static string EmailRequiredText {
+            get {
+                return ResourceManager.GetString("EmailRequiredText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description cannot be empty..
         /// </summary>
         public static string EmptyDescriptionErrorText {
@@ -583,7 +592,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I&apos;ve shared your question with the related experts. They&apos;ll respond to you directly with a chat message..
+        ///   Looks up a localized string similar to I&apos;ve shared your question with the related experts. They&apos;ll respond to you directly using your contact details..
         /// </summary>
         public static string NotificationCardContent {
             get {
@@ -606,6 +615,15 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         public static string OptionalFieldDisplayText {
             get {
                 return ResourceManager.GetString("OptionalFieldDisplayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone (required).
+        /// </summary>
+        public static string PhoneRequiredText {
+            get {
+                return ResourceManager.GetString("PhoneRequiredText", resourceCulture);
             }
         }
         
@@ -790,7 +808,25 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter short title here (50 characters max).
+        ///   Looks up a localized string similar to Enter your email address here.
+        /// </summary>
+        public static string ShowCardEmailText {
+            get {
+                return ResourceManager.GetString("ShowCardEmailText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your phone number here.
+        /// </summary>
+        public static string ShowCardPhoneText {
+            get {
+                return ResourceManager.GetString("ShowCardPhoneText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your name here.
         /// </summary>
         public static string ShowCardTitleText {
             get {
@@ -1024,7 +1060,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title (Required).
+        ///   Looks up a localized string similar to Name (required).
         /// </summary>
         public static string TitleRequiredText {
             get {

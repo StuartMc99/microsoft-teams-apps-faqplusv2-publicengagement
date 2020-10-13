@@ -41,9 +41,10 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         /// <returns>Returns the attachment that will be sent in a message.</returns>
         public Attachment ToAttachment(DateTimeOffset? localTimestamp)
         {
-            var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
-            {
-                Body = new List<AdaptiveElement>
+            var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0));
+
+
+            card.Body = new List<AdaptiveElement>
                 {
                     new AdaptiveTextBlock
                     {
@@ -61,9 +62,10 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                     {
                         Facts = this.BuildFactSet(localTimestamp),
                     },
-                },
-                Actions = this.BuildActions(),
-            };
+                };
+            
+            card.Actions = this.BuildActions();
+
 
             return new Attachment
             {
@@ -80,7 +82,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         {
             List<AdaptiveAction> actionsList = new List<AdaptiveAction>();
 
-            actionsList.Add(this.CreateChatWithUserAction());
+            if (string.IsNullOrEmpty(this.Ticket.RequesterGivenName))
+                actionsList.Add(this.CreateChatWithUserAction());
 
             actionsList.Add(new AdaptiveShowCardAction
             {

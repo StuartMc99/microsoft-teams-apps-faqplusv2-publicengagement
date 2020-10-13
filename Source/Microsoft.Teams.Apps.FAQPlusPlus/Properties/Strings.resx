@@ -170,7 +170,7 @@
     <comment>Ability to chat directly with end user from SME channel.</comment>
   </data>
   <data name="NotificationCardContent" xml:space="preserve">
-    <value>I've shared your question with the related experts. They'll respond to you directly with a chat message.</value>
+    <value>I've shared your question with the related experts. They'll respond to you directly using your contact details.</value>
     <comment>Confirmation message to the user upon asking question to the expert.</comment>
   </data>
   <data name="TeamChatHeaderText" xml:space="preserve">
@@ -240,8 +240,13 @@ I am your friendly Q&amp;A bot that helps you provide support to people who inte
     <comment>Created: one of the available fact set in notification cards- created is the title for created date value.</comment>
   </data>
   <data name="ShowCardTitleText" xml:space="preserve">
-    <value>Enter short title here (50 characters max)</value>
-    <comment>Label text where users enters title for his question or feedback. </comment>
+    <value>Enter your name here</value>
+  </data>
+  <data name="ShowCardEmailText" xml:space="preserve">
+    <value>Enter your email address here</value>
+  </data>
+  <data name="ShowCardPhoneText" xml:space="preserve">
+    <value>Enter your phone number here</value>
   </data>
   <data name="MandatoryTitleFieldText" xml:space="preserve">
     <value>Title field is mandatory.</value>
@@ -384,8 +389,13 @@ I am your friendly Q&amp;A bot that helps you provide support to people who inte
     <comment>Title fact is used to show the title entered by the user for his inquiry.</comment>
   </data>
   <data name="TitleRequiredText" xml:space="preserve">
-    <value>Name and Contact Details (required)</value>
-    <comment>Title(Required): label of the title text box.</comment>
+    <value>Name (required)</value>
+  </data>
+  <data name="EmailRequiredText" xml:space="preserve">
+    <value>Email (required)</value>
+  </data>
+  <data name="PhoneRequiredText" xml:space="preserve">
+    <value>Phone (required)</value>
   </data>
   <data name="NotHelpfulRatingText" xml:space="preserve">
     <value>Not helpful</value>
