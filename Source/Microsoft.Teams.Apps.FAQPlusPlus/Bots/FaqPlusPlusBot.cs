@@ -905,7 +905,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
             var messageBackObject = JsonConvert.DeserializeObject<MessageBack>(message.Value.ToString());
 
-            switch (messageBackObject.msteams.text)
+            string searchText = message?.Text;
+
+            if (string.IsNullOrEmpty(searchText))
+                searchText = messageBackObject.msteams.text;
+
+            switch (searchText)
             {
                 case Constants.AskAnExpert:
                     this.logger.LogInformation("Sending user ask an expert card (from answer)");
@@ -924,8 +929,24 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     newTicket = await AdaptiveCardHelper.AskAnExpertSubmitText(message, turnContext, cancellationToken, this.ticketsProvider).ConfigureAwait(false);
                     if (newTicket != null)
                     {
-                        smeTeamCard = new SmeTicketCard(newTicket).ToAttachment(message?.LocalTimestamp);
-                        userCard = new UserNotificationCard(newTicket).ToAttachment(Strings.NotificationCardContent, message?.LocalTimestamp);
+                        if (string.IsNullOrEmpty(newTicket.RequesterGivenName))
+                        {
+                            newTicket.RequesterGivenName = "TBC";
+                        }
+
+                        if (string.IsNullOrEmpty(newTicket.RequesterName))
+                        {
+                            newTicket.RequesterName = "TBC";
+                        }
+
+                        DateTimeOffset? localTimestamp = message?.LocalTimestamp;
+                        if (localTimestamp == null)
+                        {
+                            localTimestamp = DateTimeOffset.Now;
+                        }
+
+                        smeTeamCard = new SmeTicketCard(newTicket).ToAttachment(localTimestamp);
+                        userCard = new UserNotificationCard(newTicket).ToAttachment(Strings.NotificationCardContent, localTimestamp);
                     }
 
                     break;
@@ -1119,25 +1140,26 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             };
 
             var taskCompletionSource = new TaskCompletionSource<ConversationResourceResponse>();
-            await ((BotFrameworkAdapter)turnContext.Adapter).CreateConversationAsync(
-                null,       // If we set channel = "msteams", there is an error as preinstalled middleware expects ChannelData to be present.
-                turnContext.Activity.ServiceUrl,
-                this.microsoftAppCredentials,
-                conversationParameters,
-                (newTurnContext, newCancellationToken) =>
-                {
-                    var activity = newTurnContext.Activity;
-                    taskCompletionSource.SetResult(new ConversationResourceResponse
-                    {
-                        Id = activity.Conversation.Id,
-                        ActivityId = activity.Id,
-                        ServiceUrl = activity.ServiceUrl,
-                    });
-                    return Task.CompletedTask;
-                },
-                cancellationToken).ConfigureAwait(false);
 
-            return await taskCompletionSource.Task.ConfigureAwait(false);
+                await ((BotFrameworkAdapter)turnContext.Adapter).CreateConversationAsync(
+                    null,       // If we set channel = "msteams", there is an error as preinstalled middleware expects ChannelData to be present.
+                    turnContext.Activity.ServiceUrl, //"https://canary.botapi.skype.com/amer/", //hard coded so message goes back to Teams although coming from web
+                    this.microsoftAppCredentials,
+                    conversationParameters,
+                    (newTurnContext, newCancellationToken) =>
+                    {
+                        var activity = newTurnContext.Activity;
+                        taskCompletionSource.SetResult(new ConversationResourceResponse
+                        {
+                            Id = activity.Conversation.Id,
+                            ActivityId = activity.Id,
+                            ServiceUrl = activity.ServiceUrl,
+                        });
+                        return Task.CompletedTask;
+                    },
+                    cancellationToken).ConfigureAwait(false);
+
+                return await taskCompletionSource.Task.ConfigureAwait(false);
         }
 
         /// <summary>
